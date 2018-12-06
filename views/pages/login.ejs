@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<% include ../partials/head %>
+</head>
+<body class="container">
+
+	<header>
+	
+	</header>
+
+		<div class="modal-dialog modal-login">
+			<div class="modal-content">
+				<div class="modal-body">
+					<form action="/index" method="post">
+						<input type="text" class="hidden" name="actiontype">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="Email" required="required">
+						</div>
+						<div class="form-group">
+							<input type="password" class="form-control" placeholder="Password" required="required">
+						</div>
+						<div class="form-group">
+							<input type="submit" class="btn btn-primary btn-block btn-lg" value="Login" onclick="this.form.actiontype.value='login'">
+							<input type="submit" class="btn2 btn-primary btn-block btn-lg" value="Register" onclick="this.form.actiontype.value='register'">
+						</div>
+					</form>				
+				</div>
+			</div>
+		</div>
+  
+
+	<footer>
+		
+	</footer>
+	
+</body>
+</html>
