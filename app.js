@@ -13,7 +13,7 @@ app.use(session({
 	resave: false,
 	saveUninitialized: false,
 	cookie: {
-			expires: 600000
+		expires: 600000
 	}
 }));
 
@@ -21,24 +21,24 @@ app.use(session({
 
 // Database \\
 
-var sequelize = new 
-Sequelize('mysql://root:root@localhost:3306/web');
+var sequelize = new
+	Sequelize('mysql://root:root@localhost:3306/web');
 
 sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
+	.authenticate()
+	.then(() => {
+		console.log('Connection has been established successfully.');
+	})
+	.catch(err => {
+		console.error('Unable to connect to the database:', err);
+	});
 
-var Users = sequelize.define ('users',{
+var Users = sequelize.define('users', {
 	email: Sequelize.STRING,
 	password: Sequelize.STRING
 });
 
-var Events = sequelize.define ('events',{
+var Events = sequelize.define('events', {
 	userid: Sequelize.STRING,
 	date: Sequelize.DATE,
 	event: Sequelize.TEXT
@@ -47,44 +47,54 @@ sequelize.sync();
 // \\
 
 // 
-const urlencodedParser = bodyParser.urlencoded({extended: false});
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 // \\
 
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
 	res.render('pages/login');
 });
 
-app.get('/index', function(req, res) {
+app.get('/index', function (req, res) {
 	res.render('pages/index');
 });
 
-app.post('/index', urlencodedParser, function(req, res){
-	
-	if (req.body.actiontype == 'register'){
+app.post('/auth', urlencodedParser, function (req, res) {
 
-		Users.create({
-		email : req.body.email,
-		password : req.body.password
+	Users.findOne({ where: { email: req.body.email } }).then(function (user) {
 
-		}).then(user => {
-			req.session.user = user.dataValue;
-			console.log(req);
-			res.redirect('/index');
-	})
-		.catch((err) => {
-			console.log(err);
-			res.redirect('/login');
-		});
+		if (req.body.actiontype == 'register') {
+			console.log('registeration-------')
+			if (user == null) {
+				Users.create({
+					email: req.body.email,
+					password: req.body.password
+				}).catch((err) => {
+					console.log(err);
+					res.render('pages/login');
+				});
+				Users.findOne({ where: { email: req.body.email } }).then(function (user) {
+					session.id = user.dataValues.id;
+					console.log(session.id);
+				});
+				res.render('pages/index');
+			} else res.render('pages/login');
 
-	}else if (req.body.actiontype == 'login'){
-				
-	if	(Users.findOne({where:{email: req.body.email}}) == null){
-		console.log('user does not exist');
-		res.render('pages/login');
-	} else {
-			req.session.key = Users.findOne({where:{email: req.body.email}}).id;
-			res.redirect('/index');	}
-	 }
+
+		} else if (req.body.actiontype == 'login') {
+			console.log('login-------')
+			if (user == null) {
+
+				console.log('user does not exist');
+				res.render('pages/login');
+			} else {
+				session.id = user.dataValues.id;
+				console.log(session.id);
+				res.redirect('/index');
+			}
+		}
+
+	}); //findAll
+
 });
 
 app.listen(3000);
