@@ -6,19 +6,6 @@ var app = express();
 app.set('view engine', 'ejs');
 var SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-// User session \\
-app.use(session({
-	key: 'user_sid',
-	secret: '1',
-	resave: false,
-	saveUninitialized: false,
-	cookie: {
-		expires: 600000
-	}
-}));
-
-// \\
-
 // Database \\
 
 var sequelize = new
@@ -40,25 +27,63 @@ var Users = sequelize.define('users', {
 
 var Events = sequelize.define('events', {
 	userid: Sequelize.STRING,
+	eventname: Sequelize.STRING,
 	date: Sequelize.DATE,
 	event: Sequelize.TEXT
 });
 sequelize.sync();
 // \\
 
+// User session \\
+app.use(session({
+	key: 'user_sid',
+	secret: '1',
+	resave: false,
+	saveUninitialized: false,
+	cookie: {
+		userid: -1
+	}
+}));
+
+TemporaryID = 0;
+TemporaryEmail = 0;
+
+
+// \\
+
+
 // 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 // \\
 
 app.get('/', function (req, res) {
-	res.render('pages/login');
+	res.redirect('pages/login');
 });
 
 app.get('/index', function (req, res) {
-	res.render('pages/index');
+
+	res.redirect('pages/index');
 });
 
-app.post('/auth', urlencodedParser, function (req, res) {
+
+app.post('/new-event', urlencodedParser, function (req, res) {
+
+	Users.findOne({ where: { id: TemporaryID } }).then(function (user) {
+		console.log(TemporaryID);
+		Events.create({
+			userid: user.dataValues.id,
+			eventname: req.body.event_name,
+			event: req.body.event_description
+
+		}).catch((err) => {
+			console.log(err);
+			res.render('/index');
+		});
+	});
+	findAllEvents(res);
+});
+
+app.post('/index', urlencodedParser, function (req, res) {
 
 	Users.findOne({ where: { email: req.body.email } }).then(function (user) {
 
@@ -70,32 +95,48 @@ app.post('/auth', urlencodedParser, function (req, res) {
 					password: req.body.password
 				}).catch((err) => {
 					console.log(err);
-					res.render('pages/login');
-				});
-				Users.findOne({ where: { email: req.body.email } }).then(function (user) {
-					session.id = user.dataValues.id;
-					console.log(session.id);
+					Users.findOne({ where: { email: req.body.email } }).then(function (user) {
+						TemporaryID = user.dataValues.id;
+					});
+					TemporaryEmail = req.body.email;
+					findAllEvents(res);
 				});
 				res.render('pages/index');
 			} else res.render('pages/login');
-
-
 		} else if (req.body.actiontype == 'login') {
-			console.log('login-------')
+			console.log('login-------');
 			if (user == null) {
-
 				console.log('user does not exist');
 				res.render('pages/login');
 			} else {
-				session.id = user.dataValues.id;
-				console.log(session.id);
-				res.redirect('/index');
+				TemporaryEmail = user.dataValues.email;
+				TemporaryID = user.dataValues.id;
+				req.session.save();
+				console.log(TemporaryID);
+				findAllEvents(res);
 			}
 		}
 
 	}); //findAll
-
 });
+
+function findAllEvents(res) {
+	Events.findAll({ where: { userid: TemporaryID } }).then(function (event) {
+
+		function TempEvents(name, event) {
+			this.name = name;
+			this.event = event;
+		};
+		var eventArr = new Array();
+
+		for (i = 0; i < event.length; i++) {
+
+			eventArr[i] = new TempEvents('1~', event[i].dataValues.event);
+			console.log(eventArr[i]);
+		}
+		res.render('pages/index', { user: TemporaryEmail, events: eventArr });
+	});
+}
 
 app.listen(3000);
 console.log('Server started at 3000 port');
