@@ -1,4 +1,5 @@
-function createDataTable(sequelize) {
+var Sequelize = require('sequelize');
+var createDataTable = function(sequelize) {
     var Users = sequelize.define('users', {
         email: Sequelize.STRING,
         password: Sequelize.STRING
@@ -15,4 +16,7 @@ function createDataTable(sequelize) {
         Users,
         Events,
     }
+}
+module.exports = {
+    createDataTable,
 }

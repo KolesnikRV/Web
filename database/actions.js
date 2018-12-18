@@ -1,18 +1,18 @@
-var data = require('./index');
+var database = require('./index');
 var session = require('../sessions');
 
 function findUserByName(sessionID, username) {
-    data.data.findOne({ where: { email: username } }).then(function (user) {
+    database.data.findOne({ where: { email: username } }).then(function (user) {
 
         session.UserSession.set(sessionID, UserData = [user.dataValues.id]);
 
-        findAllEvents(res);
-    })
+        return user;
+    });
 }
 
 function findAllEventsByUserID(sessionID, userid) {
 
-    data.data.Events.findAll({ where: { userid: session.UserSession.get(sessionID) } }).then(function (event) {
+    database.data.Events.findAll({ where: { userid: session.UserSession.get(sessionID) } }).then(function (event) {
 
         function TempEvents(name, event) {
             this.name = name;
@@ -38,12 +38,20 @@ function comparePasswords(pswd1, pswd2) {
 
 }
 
-function addNewUser() {
+function addNewUser(req) {
+    database.data.Users.create({
+        email: req.body.email,
+        password: req.body.password
+    });
 
 }
 
-function addNewEvent(userid) {
-
+function addNewEvent(userid,req) {
+    database.data.Events.create({
+        userid: userid,
+        eventname: req.body.event_name,
+        event: req.body.event_description
+    });
 }
 
 module.exports = {

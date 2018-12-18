@@ -1,6 +1,4 @@
 var actions = require('./actions.js');
-var bodyParser = require("body-parser");
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 const login = function (req, res) {
 	console.log('I am here 1');
@@ -10,6 +8,7 @@ const login = function (req, res) {
 }
 
 const index = function (req, res) {
+	
 	res.render('pages/index');
 }
 

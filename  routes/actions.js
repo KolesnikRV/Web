@@ -21,7 +21,7 @@ function login(req) {
         console.log('user does not exist');
     } else if(database.comparePasswords(req.body.password, userdata.password)){
         
-        
+        return true;
     
     }
 }

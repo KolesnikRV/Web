@@ -6,7 +6,7 @@ var database = require('./database');
 app.set('view engine', 'ejs');
 
 database.initSequelize();
-sessions.startSession(app);
+sessions.newSession(app);
 routes.registerRoutes(app,sessions);
 
 app.listen(3000);
