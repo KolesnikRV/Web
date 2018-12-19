@@ -4,9 +4,9 @@ const database = require('../database/actions');
 const regORlog = async function (req) {
 
     if (req.body.actiontype == 'register') {
-        register(req);
+       return await register(req);
     } else if (req.body.actiontype == 'login') {
-        login(req);
+       return await login(req);
     }
 }
 
@@ -24,11 +24,11 @@ const register = async function (req) {
 
 const login = async function (req) {
     
-    var userData = await database.findUserByName(req.sessionID, req.body.email);
+    let userData = await database.findUserByName(req.sessionID, req.body.email);
     if (userData == null) {
         console.log('user does not exist');
         return null;
-    } else if (await database.comparePasswords(req.body.password, userdata.password)) {
+    } else if (await database.comparePasswords(req.body.password, userData.dataValues.password)) {
 
         return await database.findAllEventsByUserID(userData.dataValues.id);
     }

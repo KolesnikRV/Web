@@ -1,5 +1,5 @@
-var routes = require('./routes.js');
-var bodyParser = require("body-parser");
+const routes = require('./routes.js');
+const bodyParser = require("body-parser");
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 var registerRoutes  = function(app) {

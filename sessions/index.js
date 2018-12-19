@@ -1,6 +1,6 @@
-var session = require('express-session');
+const session = require('express-session');
 
-var UserSession = new Map();
+let UserSession = new Map();
 
 const newSession = async function (app) {
     app.use(await session({
@@ -15,5 +15,7 @@ const newSession = async function (app) {
 }
 module.exports = {
     newSession,
-    UserSession,
+    get UserSession(){
+        return UserSession;
+    },
 }

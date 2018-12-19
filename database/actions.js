@@ -1,8 +1,8 @@
-const { Users, Events } = require('./sequelize');
-const { UserSession } = require('../sessions');
+const DB = require('./sequelize');
+const session = require('../sessions');
 
 const findUserByName = async function (sessionID, username) {
-    const user = await Users.findOne({ where: { email: username } });
+    const user = await DB.Users.findOne({ where: { email: username } });
 
     session.UserSession.set(sessionID, user.dataValues.id);
 
@@ -11,12 +11,15 @@ const findUserByName = async function (sessionID, username) {
 
 const findAllEventsByUserID = async function (sessionID) {
 
-    const event = await Events.findAll({userid: UserSession.get(sessionID)});
+    const event = await DB.Events.findAll({userid: session.UserSession.get(sessionID)});
   
         if (event == null) {
             return null;
         } else {
-            let TempEvents = { name, eventData };
+            function TempEvents(name, event) {
+                this.name = name;
+                this.event = event;
+            };
             let eventArr = new Array();
 
             for (i = 0; i < event.length; i++) {
@@ -40,7 +43,7 @@ const comparePasswords = async function (pswd1, pswd2) {
 }
 
 const addNewUser = async function (body) {
-    await Users.create({
+    await DB.Users.create({
         email: body.email,
         password: body.password
     });
@@ -49,7 +52,7 @@ const addNewUser = async function (body) {
 
 
 const addNewEvent = async function (userid, body) {
-    await Events.create({
+    await DB.Events.create({
         userid: userid,
         eventname: body.event_name,
         event: body.event_description
