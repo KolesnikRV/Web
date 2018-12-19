@@ -8,18 +8,20 @@ const login = function (req, res) {
 }
 
 const index = function (req, res) {
-	
+
 	res.render('pages/index');
 }
 
 const newEvent = function (req, res) {
-
+	res.render('pages/index');
 }
 
 const reglog = function (req, res) {
-
-	actions.regORlog(req, res);
-
+	if (pageData = actions.regORlog(req, res) == null) {
+		res.redirect('pages/login');
+	} else {
+		res.render('pages/index', { user: 1, events: pageData });
+	}
 }
 
 module.exports = {

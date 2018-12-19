@@ -1,22 +1,31 @@
 var Sequelize = require('sequelize');
-var createDataTable = function(sequelize) {
-    var Users = sequelize.define('users', {
+
+var Users;
+var Events;
+
+/**
+ * 
+ * @param {Sequelize.Sequelize} sequelize
+ */
+var createDataTable = async function(sequelize) {
+    Users = sequelize.define('users', {
         email: Sequelize.STRING,
         password: Sequelize.STRING
     });
 
-    var Events = sequelize.define('events', {
+    Events = sequelize.define('events', {
         userid: Sequelize.STRING,
         eventname: Sequelize.STRING,
         date: Sequelize.DATE,
         event: Sequelize.TEXT
     });
-    sequelize.sync();
-    return data = {
-        Users,
-        Events,
-    }
+
+    await sequelize.sync();
 }
+
 module.exports = {
     createDataTable,
+
+    Users,
+    Events
 }

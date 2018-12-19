@@ -1,13 +1,15 @@
-var express = require('express');
-var app = express();
-var sessions = require('./sessions');
-var routes = require('./ routes');
-var database = require('./database');
+const express = require('express');
+const app = express();
+const database = require('./database');
+const sessions = require('./sessions');
+const routes = require('./ routes');
 app.set('view engine', 'ejs');
 
-database.initSequelize();
-sessions.newSession(app);
-routes.registerRoutes(app,sessions);
+(async function(){
+    await database.initSequelize();
+    await sessions.newSession(app);
+    await routes.registerRoutes(app);
 
-app.listen(3000);
-console.log('Server started at 3000 port');
+    app.listen(3000);
+    console.log('Server started at 3000 port');    
+})();

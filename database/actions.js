@@ -1,36 +1,37 @@
-var database = require('./index');
-var session = require('../sessions');
+const { Users, Events } = require('./sequelize');
+const { UserSession } = require('../sessions');
 
-function findUserByName(sessionID, username) {
-    database.data.findOne({ where: { email: username } }).then(function (user) {
+const findUserByName = async function (sessionID, username) {
+    const user = await Users.findOne({ where: { email: username } });
 
-        session.UserSession.set(sessionID, UserData = [user.dataValues.id]);
+    session.UserSession.set(sessionID, user.dataValues.id);
 
-        return user;
-    });
+    return user;
 }
 
-function findAllEventsByUserID(sessionID, userid) {
+const findAllEventsByUserID = async function (sessionID) {
 
-    database.data.Events.findAll({ where: { userid: session.UserSession.get(sessionID) } }).then(function (event) {
+    const event = await Events.findAll({userid: UserSession.get(sessionID)});
+  
+        if (event == null) {
+            return null;
+        } else {
+            let TempEvents = { name, eventData };
+            let eventArr = new Array();
 
-        function TempEvents(name, event) {
-            this.name = name;
-            this.event = event;
-        };
-        var eventArr = new Array();
+            for (i = 0; i < event.length; i++) {
 
-        for (i = 0; i < event.length; i++) {
+                eventArr[i] = new TempEvents(event[i].dataValues.eventname, event[i].dataValues.event);
+                console.log(eventArr[i]);
+            }
 
-            eventArr[i] = new TempEvents('1~', event[i].dataValues.event);
-            console.log(eventArr[i]);
+            return eventArr;
+            //res.render('pages/index', { user: TemporaryEmail, events: eventArr });
         }
-        //res.render('pages/index', { user: TemporaryEmail, events: eventArr });
-    });
-
+    
 }
 
-function comparePasswords(pswd1, pswd2) {
+const comparePasswords = async function (pswd1, pswd2) {
 
     if (pswd1 == pswd2) {
         return true;
@@ -38,19 +39,20 @@ function comparePasswords(pswd1, pswd2) {
 
 }
 
-function addNewUser(req) {
-    database.data.Users.create({
-        email: req.body.email,
-        password: req.body.password
+const addNewUser = async function (body) {
+    await Users.create({
+        email: body.email,
+        password: body.password
     });
 
 }
 
-function addNewEvent(userid,req) {
-    database.data.Events.create({
+
+const addNewEvent = async function (userid, body) {
+    await Events.create({
         userid: userid,
-        eventname: req.body.event_name,
-        event: req.body.event_description
+        eventname: body.event_name,
+        event: body.event_description
     });
 }
 

@@ -2,8 +2,8 @@ var session = require('express-session');
 
 var UserSession = new Map();
 
-newSession = function (app) {
-    app.use(session({
+const newSession = async function (app) {
+    app.use(await session({
         key: 'user_sid',
         secret: '1',
         resave: false,
