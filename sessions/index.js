@@ -1,21 +1,18 @@
 const session = require('express-session');
 
-let UserSession = new Map();
-
 const newSession = async function (app) {
-    app.use(await session({
+
+    const newSession = session({
         key: 'user_sid',
-        secret: '1',
+        secret: '1ssdgsdgsd342dgrery3',
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: true,
         cookie: {
             expires: 60000
         }
-    }));
+    });
+    app.use(newSession);
 }
 module.exports = {
     newSession,
-    get UserSession(){
-        return UserSession;
-    },
 }

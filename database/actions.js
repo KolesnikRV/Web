@@ -1,70 +1,73 @@
 const DB = require('./sequelize');
-const session = require('../sessions');
 
-const findUserByName = async function (sessionID, username) {
+const findUserByName = async function (username) {
     const user = await DB.Users.findOne({ where: { email: username } });
-
-    session.UserSession.set(sessionID, user.dataValues.id);
 
     return user;
 }
 
-const findAllEventsByUserID = async function (sessionID) {
+const findAllEventsByUserID = async function (userId) {
 
-    const event = await DB.Events.findAll({userid: session.UserSession.get(sessionID)});
-  
-        if (event == null) {
-            return null;
-        } else {
-            function TempEvents(name, event) {
-                this.name = name;
-                this.event = event;
-            };
-            let eventArr = new Array();
+    const event = await DB.Events.findAll({ where: { userid: userId }});
 
-            for (i = 0; i < event.length; i++) {
+    if (event == null) {
+        return null;
+    } else {
+        function TempEvents(name, event) {
+            this.name = name;
+            this.event = event;
+        };
+        let eventArr = new Array();
 
-                eventArr[i] = new TempEvents(event[i].dataValues.eventname, event[i].dataValues.event);
-                console.log(eventArr[i]);
-            }
+        for (i = 0; i < event.length; i++) {
 
-            return eventArr;
-            //res.render('pages/index', { user: TemporaryEmail, events: eventArr });
+            eventArr[i] = new TempEvents(event[i].dataValues.eventname, event[i].dataValues.event);
+            console.log(eventArr[i]);
         }
-    
+
+        const userName = await getUserName(userId);
+        
+
+        return { name: userName, eventArr: eventArr };
+        //res.render('pages/index', { user: TemporaryEmail, events: eventArr });
+    }
+
 }
 
-const comparePasswords = async function (pswd1, pswd2) {
+// const comparePasswords = function (pswd1, pswd2) {
 
-    if (pswd1 == pswd2) {
-        return true;
-    } else return false;
+//     if (pswd1 == pswd2) {
+//         return true;
+//     } else return false;
 
-}
+// }
 
 const addNewUser = async function (body) {
-    await DB.Users.create({
+    return await DB.Users.create({
         email: body.email,
         password: body.password
     });
-
 }
 
 
-const addNewEvent = async function (userid, body) {
-    await DB.Events.create({
-        userid: userid,
+const addNewEvent = async function (userId, body) {
+    return await DB.Events.create({
+        userid: userId,
         eventname: body.event_name,
         event: body.event_description
     });
 }
 
+const getUserName = async function (userId) {
+    const user = await DB.Users.findOne({ where: { id: userId } });
+
+    return user.dataValues.email;
+}
+
 module.exports = {
-    comparePasswords,
+    // comparePasswords,
     findUserByName,
     findAllEventsByUserID,
-    addNewUser,
-    addNewEvent,
     addNewUser,
     addNewEvent,
 }
