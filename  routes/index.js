@@ -16,6 +16,7 @@ var registerRoutes  = function(app) {
     app.get('/', sessionMiddleware, routes.index);
     app.post('/new-event', sessionMiddleware, urlencodedParser, routes.newEvent);
     app.post('/reglog', urlencodedParser, routes.reglog);
+    app.post('/logout', routes.logout);
     
 }
 

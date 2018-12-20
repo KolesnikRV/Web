@@ -6,6 +6,12 @@ const login = function (req, res) {
 	res.render('pages/login');
 }
 
+const logout =  function(req, res){
+	delete req.session.userId;
+
+	res.redirect('/login')
+}
+
 const index = async function (req, res) {
 	const userId = req.session.userId;
 	const userData = await DB.findAllEventsByUserID(userId);
@@ -56,6 +62,7 @@ const reglog = async function (req, res) {
 }
 
 module.exports = {
+	logout,
 	login,
 	index,
 	newEvent,
