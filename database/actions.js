@@ -1,11 +1,19 @@
 const DB = require('./sequelize');
 
+/**
+ * 
+ * @param {any} username 
+ */
 const findUserByName = async function (username) {
     const user = await DB.Users.findOne({ where: { email: username } });
 
     return user;
 }
 
+/**
+ * 
+ * @param {any} userId 
+ */
 const findAllEventsByUserID = async function (userId) {
 
     const event = await DB.Events.findAll({ where: { userId: userId }});
@@ -42,6 +50,10 @@ const findAllEventsByUserID = async function (userId) {
 
 // }
 
+/**
+ * 
+ * @param {any} body 
+ */
 const addNewUser = async function (body) {
     return await DB.Users.create({
         email: body.email,
@@ -49,7 +61,11 @@ const addNewUser = async function (body) {
     });
 }
 
-
+/**
+ * 
+ * @param {any} userId 
+ * @param {any} body 
+ */
 const addNewEvent = async function (userId, body) {
     return await DB.Events.create({
         userId: userId,
@@ -58,6 +74,10 @@ const addNewEvent = async function (userId, body) {
     });
 }
 
+/**
+ * 
+ * @param {any} userId 
+ */
 const getUserName = async function (userId) {
     const user = await DB.Users.findOne({ where: { id: userId } });
 

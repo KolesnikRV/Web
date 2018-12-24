@@ -1,5 +1,9 @@
 const session = require('express-session');
 
+/**
+ * 
+ * @param {any} app 
+ */
 const newSession = async function (app) {
 
     const newSession = session({

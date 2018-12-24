@@ -2,6 +2,12 @@ const routes = require('./routes.js');
 const bodyParser = require("body-parser");
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
+/**
+ * 
+ * @param {any} req 
+ * @param {any} res 
+ * @param {any} next 
+ */
 const sessionMiddleware = function(req, res, next) {
     if (req.session.userId){
         return next();
@@ -11,7 +17,11 @@ const sessionMiddleware = function(req, res, next) {
 
 }
 
-var registerRoutes  = function(app) {
+/**
+ * 
+ * @param {any} app 
+ */
+const registerRoutes  = function(app) {
     app.get('/login', routes.login);
     app.get('/', sessionMiddleware, routes.index);
     app.post('/new-event', sessionMiddleware, urlencodedParser, routes.newEvent);
