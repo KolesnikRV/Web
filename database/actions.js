@@ -8,7 +8,7 @@ const findUserByName = async function (username) {
 
 const findAllEventsByUserID = async function (userId) {
 
-    const event = await DB.Events.findAll({ where: { userid: userId }});
+    const event = await DB.Events.findAll({ where: { userId: userId }});
 
     if (event == null) {
         return null;
@@ -52,7 +52,7 @@ const addNewUser = async function (body) {
 
 const addNewEvent = async function (userId, body) {
     return await DB.Events.create({
-        userid: userId,
+        userId: userId,
         eventname: body.event_name,
         event: body.event_description
     });

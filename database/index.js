@@ -1,8 +1,8 @@
 const database = require('./sequelize.js');
 const Sequelize = require('sequelize');
-//var SequelizeStore = require('connect-session-sequelize')(session.Store);
-
-const sequelize = new Sequelize('mysql://root:root@localhost:3306/web');
+require('dotenv').config();
+const sequelize = new Sequelize(''+process.env.DB+'://'+process.env.DB_USER+
+':'+process.env.DB_PASS+'@'+process.env.DB_HOST+':'+process.env.DB_PORT+'/web');
 
 const initSequelize = async function () {
     await sequelize.authenticate();
