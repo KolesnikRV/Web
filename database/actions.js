@@ -21,15 +21,16 @@ const findAllEventsByUserID = async function (userId) {
     if (event == null) {
         return null;
     } else {
-        function TempEvents(name, event) {
+        function TempEvents(name, event, date) {
             this.name = name;
             this.event = event;
+            this.date = date;
         };
         let eventArr = new Array();
 
         for (i = 0; i < event.length; i++) {
 
-            eventArr[i] = new TempEvents(event[i].dataValues.eventname, event[i].dataValues.event);
+            eventArr[i] = new TempEvents(event[i].dataValues.eventname, event[i].dataValues.event, event[i].dataValues.date );
             console.log(eventArr[i]);
         }
 
@@ -70,7 +71,8 @@ const addNewEvent = async function (userId, body) {
     return await DB.Events.create({
         userId: userId,
         eventname: body.event_name,
-        event: body.event_description
+        event: body.event_description,
+        date: body.event_date,
     });
 }
 
