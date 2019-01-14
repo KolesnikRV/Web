@@ -4,7 +4,7 @@ const database = require('./database');
 const sessions = require('./sessions');
 const routes = require('./ routes');
 app.set('view engine', 'ejs');
-
+app.set('views', 'app/views');
 (async function(){
     await database.initSequelize();
     await sessions.newSession(app);
