@@ -72,7 +72,7 @@ const reglog = async function (req, res) {
 			return;
 		}
 
-		if (req.body.password != user.dataValues.password) {
+		if (!DB.comparePasswords(req.body.password, user.dataValues.password)) {
 			res.status(401).send('invalid username/password');
 			return;
 		}

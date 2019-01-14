@@ -1,4 +1,7 @@
+const bcrypt = require('bcrypt');
 const DB = require('./sequelize');
+require('dotenv').config();
+
 
 /**
  * 
@@ -16,7 +19,7 @@ const findUserByName = async function (username) {
  */
 const findAllEventsByUserID = async function (userId) {
 
-    const event = await DB.Events.findAll({ where: { userId: userId }});
+    const event = await DB.Events.findAll({ where: { userId: userId } });
 
     if (event == null) {
         return null;
@@ -30,35 +33,33 @@ const findAllEventsByUserID = async function (userId) {
 
         for (i = 0; i < event.length; i++) {
 
-            eventArr[i] = new TempEvents(event[i].dataValues.eventname, event[i].dataValues.event, event[i].dataValues.date );
+            eventArr[i] = new TempEvents(event[i].dataValues.eventname, event[i].dataValues.event, event[i].dataValues.date);
             console.log(eventArr[i]);
         }
 
         const userName = await getUserName(userId);
-        
+
 
         return { name: userName, eventArr: eventArr };
-        //res.render('pages/index', { user: TemporaryEmail, events: eventArr });
     }
 
 }
 
-// const comparePasswords = function (pswd1, pswd2) {
+const comparePasswords = async function (form_password, DB_password) {
 
-//     if (pswd1 == pswd2) {
-//         return true;
-//     } else return false;
+    return await bcrypt.compare(form_password, DB_password);
 
-// }
+}
 
 /**
  * 
  * @param {any} body 
  */
 const addNewUser = async function (body) {
+    let BCRYPT_SALT_ROUNDS = await parseInt(process.env.BCRYPT_SALT_ROUNDS, 10);
     return await DB.Users.create({
         email: body.email,
-        password: body.password
+        password: await bcrypt.hash(body.password, BCRYPT_SALT_ROUNDS),
     });
 }
 
@@ -87,7 +88,7 @@ const getUserName = async function (userId) {
 }
 
 module.exports = {
-    // comparePasswords,
+    comparePasswords,
     findUserByName,
     findAllEventsByUserID,
     addNewUser,
