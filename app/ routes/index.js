@@ -1,6 +1,7 @@
-const routes = require('./routes.js');
-const bodyParser = require("body-parser");
-const urlencodedParser = bodyParser.urlencoded({ extended: false });
+const login = require('./login.js');
+const main = require('./main.js');
+// const bodyParser = require("body-parser");
+// const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 /**
  * 
@@ -8,8 +9,8 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
  * @param {any} res 
  * @param {any} next 
  */
-const sessionMiddleware = function(req, res, next) {
-    if (req.session.userId){
+const sessionMiddleware = function (req, res, next) {
+    if (req.session.userId) {
         return next();
     }
 
@@ -21,14 +22,14 @@ const sessionMiddleware = function(req, res, next) {
  * 
  * @param {any} app 
  */
-const registerRoutes  = function(app) {
-    app.get('/login', routes.login);
-    app.get('/', sessionMiddleware, routes.index);
-    app.get('*', sessionMiddleware, routes.index);
-    app.post('/new-event', sessionMiddleware, urlencodedParser, routes.newEvent);
-    app.post('/reglog', urlencodedParser, routes.reglog);
-    app.post('/logout', routes.logout);
-    
+const registerRoutes = function (app) {
+    app.get('/login', login.login);
+    app.get('/', sessionMiddleware, main.index);
+    app.get('*', sessionMiddleware, main.index);
+    app.post('/new-event', sessionMiddleware, main.newEvent);
+    app.post('/reglog', login.reglog);
+    app.post('/logout', main.logout);
+
 }
 
 module.exports = {

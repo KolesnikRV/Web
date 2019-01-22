@@ -1,4 +1,4 @@
-const database = require('./sequelize.js');
+const database = require('../migrations/sequelize.js');
 const Sequelize = require('sequelize');
 require('dotenv').config();
 const sequelize = new Sequelize(''+process.env.DB+'://'+process.env.DB_USER+

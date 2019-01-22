@@ -65,8 +65,8 @@
 				<div class="list-group">
 
 
-					<% events.forEach(function(event){
-						if(new Date() < event.date){
+					<% if (events == undefined){} else { events.forEach(function(event){
+						if(new Date() > event.date){
 						%>
 					<a href="#" class="list-group-item list-group-item-danger flex-column align-items-start">
 						<div class="d-flex w-100 justify-content-between">
@@ -86,7 +86,7 @@
 									<%= event.event %>
 								</p>
 							</a>
-							<% }) %>
+							<% })} %>
 						</div>
 
 						<nav aria-label="Page navigation example">

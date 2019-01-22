@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const DB = require('./sequelize');
+const DB = require('../../migrations/sequelize.js');
 require('dotenv').config();
 
 
