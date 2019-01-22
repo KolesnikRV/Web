@@ -24,6 +24,7 @@ const sessionMiddleware = function(req, res, next) {
 const registerRoutes  = function(app) {
     app.get('/login', routes.login);
     app.get('/', sessionMiddleware, routes.index);
+    app.get('*', sessionMiddleware, routes.index);
     app.post('/new-event', sessionMiddleware, urlencodedParser, routes.newEvent);
     app.post('/reglog', urlencodedParser, routes.reglog);
     app.post('/logout', routes.logout);

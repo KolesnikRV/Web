@@ -29,9 +29,34 @@ const logout = function (req, res) {
  */
 const index = async function (req, res) {
 	const userId = req.session.userId;
+	let page = await req.url.substring(1, req.url.length);
 	const userData = await DB.findAllEventsByUserID(userId);
+	const eventPages = Math.ceil(userData.eventArr.length / 5);
+	let pageUserData = new Array();
+console.log (new Date())
+	if (page == "") {
+		let upperCount = 0;
+		if (eventPages > 0) {
+			upperCount = 5;
+		} else { upperCount = userData.eventArr.length }
 
-	res.render('pages/index', { user: userData.name, events: userData.eventArr });
+		for (count = 0; count < upperCount; count++) {
+			pageUserData[count] = userData.eventArr[count];
+
+		}
+	} else {
+		let upperCount = 0;
+		if (userData.eventArr.length - 5 * page + 5 > 4) {
+			upperCount = 5;
+		} else { upperCount = userData.eventArr.length - 5 * page + 5 }
+
+		for (count = 0; count < upperCount ; count++) {
+			pageUserData[count] = userData.eventArr[page * 5 - 5 + count]
+		}
+
+	}
+
+	res.render('pages/index', { user: userData.name, events: pageUserData, all_events: eventPages, date:  new Date() });
 }
 
 /**
@@ -42,7 +67,6 @@ const index = async function (req, res) {
 const newEvent = async function (req, res) {
 	const userId = req.session.userId;
 	await DB.addNewEvent(userId, req.body);
-
 	res.redirect('/');
 }
 
