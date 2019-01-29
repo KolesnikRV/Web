@@ -1,0 +1,26 @@
+<div class="jumbotron">
+
+    <div id="eventName">
+    </div>
+
+    <div id="eventDescription">
+    </div>
+
+    <div id="eventDate">
+    </div>
+
+<script>
+
+    showEventData = function (event) {
+        var EventData = event.querySelectorAll('*');
+        document.getElementById("eventName").innerHTML = EventData[2].innerHTML;
+        document.getElementById("eventDate").innerHTML = EventData[3].innerHTML;
+        document.getElementById("eventDescription").innerHTML = EventData[4].innerHTML;
+
+
+    }     
+</script>
+
+
+
+</div>
