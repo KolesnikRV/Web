@@ -17,9 +17,9 @@ const findUserByName = async function (username) {
  * 
  * @param {any} userId 
  */
-const findAllEventsByUserID = async function (userId, limit, offset) {
+const findAllEventsByUserID = async function (userId, limit, offset, order) {
 
-    const event = await DB.Events.findAndCountAll({ where: { userId: userId }, limit, offset });
+    const event = await DB.Events.findAndCountAll({ where: { userId: userId }, limit, offset, order:[[order, 'DESC']] });
     if (event == null) {
         return null;
     } else {

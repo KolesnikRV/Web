@@ -18,24 +18,25 @@ const logout = function (req, res) {
  */
 const index = async function (req, res) {
 	const userId = req.session.userId;
-	const page = await req.url.substring(1, req.url.length);
+	const page = req.params.pageNumber || 1;
 	let userData;
 	let eventPages;
+	console.log(req.query.Sort);
+	console.log(page);
+	console.log(req.params.pageNumber);
 
-	console.log(await DB.findAllEventsByUserID(userId, 5, 15))
+	if (req.query.eventsOnPage == undefined) { req.query.eventsOnPage = 5; }
+	if (req.query.Sort == undefined) { req.query.Sort = "eventname"; }
+	userData = await DB.findAllEventsByUserID(userId, Number(req.query.eventsOnPage), (page - 1) * Number(req.query.eventsOnPage), req.query.Sort);
 
-	if (page == "") {
-		
-		userData = await DB.findAllEventsByUserID(userId, 5, 0);
 
-	} else {
+	eventPages = Math.ceil(userData.countPages / req.query.eventsOnPage);
 
-		userData = await DB.findAllEventsByUserID(userId, 5, (page - 1) * 5);
-
-	}
-	eventPages = Math.ceil(userData.countPages / 5);
-
-	res.render('pages/index', { user: userData.name, events: userData.eventArr, all_events: eventPages, date: new Date() });
+	res.render('pages/index', {
+		eventsOnPage: req.query.eventsOnPage, sort: req.query.Sort,
+		pageNumber: page, user: userData.name, events: userData.eventArr,
+		all_events: eventPages, date: new Date()
+	});
 }
 
 /**

@@ -25,7 +25,7 @@ const sessionMiddleware = function (req, res, next) {
 const registerRoutes = function (app) {
     app.get('/login', login.login);
     app.get('/', sessionMiddleware, main.index);
-    app.get('*', sessionMiddleware, main.index);
+    app.get('/:pageNumber', sessionMiddleware, main.index);
     app.post('/new-event', sessionMiddleware, main.newEvent);
     app.post('/reglog', login.reglog);
     app.post('/logout', main.logout);

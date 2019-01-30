@@ -36,45 +36,60 @@
 
 <div class="list-group">
 
+    <div> Sort by:
+        <a href=?Sort=eventname&eventsOnPage=<%=eventsOnPage%>> Name</a>
+        <a href=?Sort=date&eventsOnPage=<%=eventsOnPage%>>Date</a>
+        <div class="btn-group" role="group">
+                <button id="btnGroupDrop1" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    Events on page..
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <a class="dropdown-item" href=<%=pageNumber%>?Sort=<%=sort%>&eventsOnPage=5>5</a>
+                    <a class="dropdown-item" href=<%=pageNumber%>?Sort=<%=sort%>&eventsOnPage=10>10</a>
+                    <a class="dropdown-item" href=<%=pageNumber%>?Sort=<%=sort%>&eventsOnPage=20>20</a>
+                </div>
+            </div>
+    </div>
 
     <% if (events == undefined){} else { events.forEach(function(event){
 						if(new Date() > event.date){
                         %>
-                        <div onclick="showEventData(this)">
-    <a href="#" class="list-group-item list-group-item-danger flex-column align-items-start">
-        <div class="d-flex w-100 justify-content-between">
-            
-            <% } else { %>
-            <button onclick="showEventData(this)">
-            <a href="#" class="list-group-item list-group-item-success flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    <% } %>
+    <div onclick="showEventData(this)">
+        <a href="#" class="list-group-item list-group-item-danger flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+
+                <% } else { %>
+                <button onclick="showEventData(this)">
+                    <a href="#" class="list-group-item list-group-item-success flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <% } %>
 
 
-                    <h5 class="mb-1" name="name">
-                        <%= event.name %>
-                    </h5>
-                    <small class="text-muted" name="date">
-                        <%= event.date %></small>
-                </div>
-                <p class="mb-1 d-none" name="description">
-                    <%= event.event %>
-                </p>
-            </a>
-        </div>
+                            <h5 class="mb-1" name="name">
+                                <%= event.name %>
+                            </h5>
+                            <small class="text-muted" name="date">
+                                <%= event.date %></small>
+                        </div>
+                        <p class="mb-1 d-none" name="description">
+                            <%= event.event %>
+                        </p>
+                    </a>
+            </div>
             <% })} %>
-        </div>
+    </div>
 
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <% for(count = 0; count < all_events; count++){ %>
-                <li class="page-item"><a class="page-link" href=<%=count+1%> >
-                        <%= count+1%></a></li>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <% for(count = 0; count < all_events; count++){ %>
+            <li class="page-item"><a class="page-link" href=<%=count+1%>?Sort=<%=sort%>&eventsOnPage=<%=eventsOnPage%>>
+                    <%= count+1%></a></li>
 
 
-                <% } %>
-            </ul>
-        </nav>
+            <% } %>
+        </ul>
+    </nav>
 
 
 </div>
