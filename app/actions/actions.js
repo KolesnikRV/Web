@@ -17,10 +17,9 @@ const findUserByName = async function (username) {
  * 
  * @param {any} userId 
  */
-const findAllEventsByUserID = async function (userId) {
+const findAllEventsByUserID = async function (userId, limit, offset) {
 
-    const event = await DB.Events.findAll({ where: { userId: userId } });
-
+    const event = await DB.Events.findAndCountAll({ where: { userId: userId }, limit, offset });
     if (event == null) {
         return null;
     } else {
@@ -31,16 +30,16 @@ const findAllEventsByUserID = async function (userId) {
         };
         let eventArr = new Array();
 
-        for (i = 0; i < event.length; i++) {
+        for (i = 0; i < event.rows.length; i++) {
 
-            eventArr[i] = new TempEvents(event[i].dataValues.eventname, event[i].dataValues.event, event[i].dataValues.date);
+            eventArr[i] = new TempEvents(event.rows[i].dataValues.eventname, event.rows[i].dataValues.event, event.rows[i].dataValues.date);
             console.log(eventArr[i]);
         }
 
         const userName = await getUserName(userId);
 
 
-        return { name: userName, eventArr: eventArr };
+        return { name: userName, eventArr: eventArr, countPages: event.count };
     }
 
 }
