@@ -1,6 +1,6 @@
-<button type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">New Event</button>
+<button type="button" class="btn btn-default btn-lg btn-block" style = "margin-top: 5px; margin-bottom: 5px" data-toggle="modal" data-target="#exampleModal">New Event</button>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" >
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">New Event</h5>
@@ -37,8 +37,8 @@
 <div class="list-group">
 
     <div>
-        <div class="btn-group" role="group">
-            <button class="btn btn-default btn-sm" type="button">
+        <div class="btn-group" role="group" style = "margin-bottom: 5px">
+            <button class="btn btn-default btn-default" type="button">
                 Sort by: 
             </button>
 
@@ -59,8 +59,8 @@
 
 
 
-        <div class="btn-group" role="group">
-            <button class="btn btn-default btn-sm" type="button">
+        <div class="btn-group" role="group" style = "margin-bottom: 5px">
+            <button class="btn btn-default btn-default" type="button">
                 Events on page:
             </button>
 
@@ -80,12 +80,12 @@
     <% if (events == undefined){} else { events.forEach(function(event){
 						if(new Date() > event.date){
                         %>
-    <div onclick="showEventData(this)">
+    <div onclick="showEventData(this)" style = "margin-bottom: 5px">
         <a href="#" class="list-group-item list-group-item-danger flex-column align-items-start">
             <div class="d-flex w-100 justify-content-between">
 
                 <% } else { %>
-                <div onclick="showEventData(this)">
+                <div onclick="showEventData(this)" style = "margin-bottom: 5px">
                     <a href="#" class="list-group-item list-group-item-success flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                             <% } %>

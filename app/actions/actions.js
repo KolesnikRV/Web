@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const DB = require('../../migrations/sequelize.js');
 require('dotenv').config();
-
+const Sequelize = require('sequelize');
 
 /**
  * 
@@ -36,7 +36,7 @@ const findAllEventsByUserID = async function (userId, limit, offset, order, ADor
             eventArr[i] = new TempEvents(event.rows[i].dataValues.eventname, event.rows[i].dataValues.event, event.rows[i].dataValues.date, event.rows[i].dataValues.id);
             console.log(eventArr[i]);
         }
-
+        console.log(event);
         const userName = await getUserName(userId);
 
 
@@ -44,6 +44,43 @@ const findAllEventsByUserID = async function (userId, limit, offset, order, ADor
     }
 
 }
+
+
+const groupEventsByDate = async function (userId) {
+
+    const event = await DB.Events.findAll({
+        where: { userId: userId }, attributes: ['date', [Sequelize.fn('COUNT', 'date'), 'eventCount']],
+        group: ['date',], order: [['date', 'DESC']]
+    });
+
+    console.log(event);
+    if (event == null) {
+
+        return null;
+    }
+
+    function TempEvents(date, eventCount) {
+        this.date = date;
+        this.eventCount = eventCount;
+    };
+    let eventStat = new Array();
+
+    for (i = 0; i < event.length; i++) {
+
+        eventStat[i] = new TempEvents(event[i].dataValues.date, event[i].dataValues.eventCount);
+
+    }
+    return eventStat;
+}
+
+
+
+/**
+ * 
+ * @param {string} form_password 
+ * @param {string} DB_password 
+ */
+
 
 const comparePasswords = async function (form_password, DB_password) {
 
@@ -92,7 +129,7 @@ const getUserName = async function (userId) {
  * @param {any} body  
  */
 const editEvent = async function (body) {
-    console.log ('hello I am here')
+    console.log('hello I am here')
     return await DB.Events.update({
         eventname: body.event_name,
         event: body.event_description,
@@ -106,6 +143,7 @@ const editEvent = async function (body) {
  * @param {any} eventId 
  */
 const deleteEvent = async function (eventId) {
+
     return await DB.Events.destroy({ where: { id: eventId } });
 }
 
@@ -117,4 +155,5 @@ module.exports = {
     addNewEvent,
     editEvent,
     deleteEvent,
+    groupEventsByDate,
 }

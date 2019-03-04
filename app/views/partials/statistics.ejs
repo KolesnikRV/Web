@@ -1,0 +1,28 @@
+<div class="table-responsive " style="margin-top: 5px">
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
+            <tr>
+                <th>Date</th>
+                <th>Events count</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <% if (eventStat == undefined){} else {
+                count = -1;
+                eventStat.forEach(function(event){
+                 if(new Date() > event.date){
+                     %>
+            <tr class="table-danger">
+
+                <% } else { %>
+            <tr class="table-success">
+
+                <% } %>
+                <td><%=event.date%></td>
+                <td> Events: <%=event.eventCount%></td>
+            <% })} %>
+            </tr>
+        </tbody>
+    </table>
+</div>
