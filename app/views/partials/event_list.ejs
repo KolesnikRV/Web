@@ -91,15 +91,11 @@
                             <% } %>
 
 
-                            <h5 class="mb-1" name="name">
-                                <%= event.name %>
-                            </h5>
-                            <small class="text-muted" name="date">
-                                <%= event.date %></small>
+                            <h5 class="mb-1" name="name"><%= event.name %></h5>
+                            <small class="text-muted" name="date"><%= event.date %></small>
                         </div>
-                        <p class="mb-1 d-none" name="description">
-                            <%= event.event %>
-                        </p>
+                        <p class="mb-1 d-none" name="description"><%= event.event %></p>
+                        <p class="mb-1 d-none" name="eventID"><%= event.id %></p>
                     </a>
             </div>
             <% })} %>

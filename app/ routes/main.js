@@ -49,6 +49,27 @@ const index = async function (req, res) {
 const newEvent = async function (req, res) {
 	const userId = req.session.userId;
 	await DB.addNewEvent(userId, req.body);
+	res.redirect('/1');
+}
+
+/**
+ * 
+ * @param {any} req 
+ * @param {any} res 
+ */
+const editEvent = async function (req, res) {
+	await DB.editEvent(req.body);
+	res.redirect('/');
+}
+
+/**
+ * 
+ * @param {any} req 
+ * @param {any} res 
+ */
+const deleteEvent = async function (req, res) {
+	console.log(req.body.event_id+"-----------")
+	await DB.deleteEvent(req.body.event_id);
 	res.redirect('/');
 }
 
@@ -56,5 +77,7 @@ module.exports = {
 	logout,
 	index,
 	newEvent,
+	editEvent,
+	deleteEvent,
 }
 

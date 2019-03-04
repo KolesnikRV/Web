@@ -29,6 +29,8 @@ const registerRoutes = function (app) {
     app.post('/new-event', sessionMiddleware, main.newEvent);
     app.post('/reglog', login.reglog);
     app.post('/logout', main.logout);
+    app.post('/edit-event', main.editEvent);
+    app.post('/delete-event', main.deleteEvent)
 
 }
 
