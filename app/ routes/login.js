@@ -27,8 +27,9 @@ const reglog = async function (req, res) {
 		user = await DB.addNewUser(req.body);
 
 		req.session.userId = user.dataValues.id;
+		
 
-		res.redirect('/');
+		res.redirect('/1');
 		return;
 	} else if (req.body.actiontype == 'login') {
 		const user = await DB.findUserByName(req.body.email);
@@ -44,7 +45,7 @@ const reglog = async function (req, res) {
 
 		req.session.userId = user.dataValues.id;
 
-		res.redirect('/');
+		res.redirect('/1');
 		return;
 	}
 

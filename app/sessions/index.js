@@ -12,7 +12,7 @@ const newSession = async function (app) {
         resave: false,
         saveUninitialized: true,
         cookie: {
-            expires: 60000
+            expires: 6000000
         }
     });
     app.use(newSession);

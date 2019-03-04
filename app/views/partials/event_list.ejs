@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Add</button>
+<button type="button" class="btn btn-default btn-lg btn-block" data-toggle="modal" data-target="#exampleModal">New Event</button>
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -38,11 +38,11 @@
 
     <div>
         <div class="btn-group" role="group">
-            <button class="btn btn-secondary btn-sm" type="button">
+            <button class="btn btn-default btn-sm" type="button">
                 Sort by: 
             </button>
 
-            <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm  dropdown-toggle" data-toggle="dropdown"
+            <button id="btnGroupDrop1" type="button" class="btn btn-default btn-sm dropdown-toggle " data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <%= sort %>
                 <span class="sr-only">Toggle Dropdown</span>
@@ -60,11 +60,11 @@
 
 
         <div class="btn-group" role="group">
-            <button class="btn btn-secondary btn-sm" type="button">
+            <button class="btn btn-default btn-sm" type="button">
                 Events on page:
             </button>
 
-            <button id="btnGroupDrop2" type="button" class="btn btn-secondary btn-sm  dropdown-toggle" data-toggle="dropdown"
+            <button id="btnGroupDrop2" type="button" class="btn btn-default btn-sm  dropdown-toggle" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <%= eventsOnPage %>
                 <span class="sr-only">Toggle Dropdown</span>
@@ -85,7 +85,7 @@
             <div class="d-flex w-100 justify-content-between">
 
                 <% } else { %>
-                <button onclick="showEventData(this)">
+                <div onclick="showEventData(this)">
                     <a href="#" class="list-group-item list-group-item-success flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                             <% } %>
@@ -114,5 +114,5 @@
         </ul>
     </nav>
 
-
+</div>
 </div>

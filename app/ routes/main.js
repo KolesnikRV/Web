@@ -19,6 +19,7 @@ const logout = function (req, res) {
 const index = async function (req, res) {
 	const userId = req.session.userId;
 	const page = req.params.pageNumber || 1;
+	let ADorder;
 	let userData;
 	let eventPages;
 	console.log(req.query.Sort);
@@ -27,7 +28,8 @@ const index = async function (req, res) {
 
 	if (req.query.eventsOnPage == undefined) { req.query.eventsOnPage = 5; }
 	if (req.query.Sort == undefined) { req.query.Sort = "eventname"; }
-	userData = await DB.findAllEventsByUserID(userId, Number(req.query.eventsOnPage), (page - 1) * Number(req.query.eventsOnPage), req.query.Sort);
+	if (req.query.Sort == "eventname") { ADorder = "ASC" } else { ADorder = "DESC" }
+	userData = await DB.findAllEventsByUserID(userId, Number(req.query.eventsOnPage), (page - 1) * Number(req.query.eventsOnPage), req.query.Sort, ADorder);
 
 
 	eventPages = Math.ceil(userData.countPages / req.query.eventsOnPage);
